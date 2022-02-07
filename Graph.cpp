@@ -207,7 +207,7 @@ void Graph::JoinRingGraph(int ring_index)
 	 {
 		  adjencyList[i].push_back(i + 1);
 	 }
-	 adjencyList[n - 1].push_back(0);
+	 adjencyList[n - 1].push_back(ring_index);
 }
 
 int Graph::ChooseRandomVertexIndex(int min, int max)

@@ -93,7 +93,7 @@ void Quest_9()
 {
 	 //Choose random vertex outside ring and one inside ring,
 	 //and add the inside-one to be neighbor of the outside one (means there's an edge outside->inside)
-	 int vnum = 1024, N = pow(2, 6);
+	 int vnum = 1024, N = 650;
 	 double p = 1.0 / 64.0;
 	 Graph g(vnum, p, 1024 - 64);
 	 vector<double> vec = g.Quest_7(N, 0.0);
