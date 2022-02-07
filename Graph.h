@@ -20,6 +20,8 @@ public:
 	 Graph(int dim);
 	 //Generate graph for first family to discuss (Q6 and on)
 	 Graph(int dim, double p);
+	 //Generate Graph with a ring:
+	 Graph(int dim, double p, int non_ring_index);
 
 	 double CalculateAverageRank();
 	 int RandomWalk(int& N, double& epsilon);
@@ -29,18 +31,17 @@ public:
 	 int ChooseRandomVertex();
 	 double GenerateFraction();
 	 vector<double> quest_1(int N, int t, double epsilon);
-	 void instert_neigbor(int add_to, int add);
 	 //quest_1 related functions:
 	 void InitLists();
 	 void check_if_probability_vector(vector<double>& d_array);
 
 	 //First Family related functions:
-	 void InitFirstFamily(double p);
+	 void InitFirstFamily(int dim, double p);
 	 vector<double> Quest_7(int N, double epsilon = 0.0, bool quest_8 = false);
 	 double Calculate_Distance(vector<double>& current, vector<double>& previous);
 
 	 //Second Family related functions:
 	 void JoinRingGraph(int connect_number);
 	 int ChooseRandomVertexIndex(int min, int max);
-	 void check_average_of_two_groups(int rings_end, vector<double> average_vector);
+	 void check_average_of_two_groups(int rings_start, vector<double> average_vector);
 };

@@ -95,18 +95,14 @@ void Quest_9()
 	 //and add the inside-one to be neighbor of the outside one (means there's an edge outside->inside)
 	 int vnum = 1024, N = pow(2, 6);
 	 double p = 1.0 / 64.0;
-	 Graph g(vnum, p);
-	 g.JoinRingGraph(pow(2, 6));
-	 int from_ring = g.ChooseRandomVertexIndex(0, 63);
-	 int outside_ring = g.ChooseRandomVertexIndex(64, 1023);
-	 g.instert_neigbor(outside_ring, from_ring);
+	 Graph g(vnum, p, 1024 - 64);
 	 vector<double> vec = g.Quest_7(N, 0.0);
 	 printVector(vec);
-	 g.check_average_of_two_groups(64, vec);
+	 g.check_average_of_two_groups(1024 - 64, vec);
 }
 
 int main()
 {
-	 Quest_8();
+	 Quest_9();
 	 return 0;
 }

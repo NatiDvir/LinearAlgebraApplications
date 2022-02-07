@@ -13,7 +13,19 @@ Graph::Graph(int dim, double p)
 	 this->n = dim;
 	 adjencyList = vector<vector<int>>(n, vector<int>());
 	 indexes = vector<int>(n, 0);
-	 InitFirstFamily(p);
+	 InitFirstFamily(dim, p);
+}
+
+Graph::Graph(int dim, double p, int non_ring_index)
+{
+	 this->n = dim;
+	 adjencyList = vector<vector<int>>(n, vector<int>());
+	 indexes = vector<int>(n, 0);
+	 InitFirstFamily(non_ring_index, p);
+	 JoinRingGraph(non_ring_index);
+	 int outside_ring = ChooseRandomVertexIndex(0, non_ring_index);
+	 int from_ring = ChooseRandomVertexIndex(non_ring_index + 1, n);
+	 adjencyList[outside_ring].push_back(from_ring);
 }
 
 vector<double> Graph::quest_1(int N, int t, double epsilon)
@@ -23,25 +35,6 @@ vector<double> Graph::quest_1(int N, int t, double epsilon)
 
 	 check_if_probability_vector(divided_vector);
 	 return divided_vector;
-}
-
-void Graph::instert_neigbor(int add_to, int add)
-{
-	 bool next_is_neigbor = false;
-	 int i_adjencyList_size = adjencyList[add_to].size();
-	 for (int j = 0; j < i_adjencyList_size; j++)
-	 {
-		  if (adjencyList[add_to][j] == add)
-		  {
-			   next_is_neigbor = true;
-			   break;
-		  }
-	 }
-
-	 if (!next_is_neigbor)
-	 {
-		  adjencyList[add_to].push_back(add);
-	 }
 }
 
 vector<double> Graph::t_times_RandomWalk(int N, int t, double epsilon)
@@ -139,11 +132,11 @@ void Graph::InitLists()
 	 }
 }
 
-void Graph::InitFirstFamily(double p)
+void Graph::InitFirstFamily(int dim, double p)
 {
-	 for (int from_vertex = 0; from_vertex < n; from_vertex++)
+	 for (int from_vertex = 0; from_vertex < dim; from_vertex++)
 	 {
-		  for (int to_vertex = 0; to_vertex < n; to_vertex++)
+		  for (int to_vertex = 0; to_vertex < dim; to_vertex++)
 		  {
 			   double current_probabilty = GenerateFraction();
 			   if (current_probabilty <= p)
@@ -158,7 +151,7 @@ void Graph::InitFirstFamily(double p)
 vector<double> Graph::Quest_7(int N, double epsilon, bool quest_8)
 {
 	 bool quest_7 = !quest_8;
-	 int t = 3, cntr = 0;
+	 int t = 1, cntr = 0;
 	 int itr = 1;
 	 //for t = 2:
 	 vector<double> d_previous = vector<double>(),
@@ -208,30 +201,13 @@ double Graph::Calculate_Distance(vector<double>& current, vector<double>& previo
 	 return sqrt(distance);
 }
 
-void Graph::JoinRingGraph(int connect_number)
+void Graph::JoinRingGraph(int ring_index)
 {
-	 for (int i = 0; i < connect_number; i++)
+	 for (int i = ring_index; i < n - 1; i++)
 	 {
-		  bool next_is_neigbor = false;
-		  int i_adjencyList_size = adjencyList[i].size();
-		  for (int j = 0; j < i_adjencyList_size; j++)
-		  {
-			   if (adjencyList[i][j] == i + 1)
-			   {
-					next_is_neigbor = true;
-					break;
-			   }
-		  }
-
-		  if (!next_is_neigbor)
-		  {
-			   if (i != connect_number - 1)
-					adjencyList[i].push_back(i + 1);
-			   else
-					adjencyList[i].push_back(0);
-			   //if it the last vertex in circle- make it circular.
-		  }
+		  adjencyList[i].push_back(i + 1);
 	 }
+	 adjencyList[n - 1].push_back(0);
 }
 
 int Graph::ChooseRandomVertexIndex(int min, int max)
@@ -243,23 +219,24 @@ int Graph::ChooseRandomVertexIndex(int min, int max)
 	 return random_integer;
 }
 
-void Graph::check_average_of_two_groups(int rings_end, vector<double> average_vector)
+void Graph::check_average_of_two_groups(int rings_start, vector<double> average_vector)
 {
 	 cout << "Ring's group average rank: ";
 	 double sum = 0.0, ring_avg, non_ring_avg;
 	 //Calculate average rank of ring's verteces:
-	 for (int i = 0; i < rings_end; i++)
+	 for (int i = rings_start; i < n; i++)
 	 {
 		  sum += average_vector[i];
 	 }
-	 ring_avg = sum / (double)rings_end;
+	 non_ring_avg = sum / (double)(n - rings_start);
+	 cout << non_ring_avg << endl;
 	 sum = 0.0;
 	 //Calculate average rank of non-ring's verteces:
-	 for (int i = rings_end; i < n; i++)
+	 for (int i = 0; i < rings_start; i++)
 	 {
 		  sum += average_vector[i];
 	 }
-	 non_ring_avg = sum / (double)(n - rings_end);
+	 ring_avg = sum / (double)(rings_start);
 	 cout << "Non-Ring's group average rank: ";
 	 cout << non_ring_avg << endl;
 }
