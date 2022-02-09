@@ -22,6 +22,8 @@ public:
 	 Graph(int dim, double p);
 	 //Generate Graph with a ring:
 	 Graph(int dim, double p, int non_ring_index);
+	 //Generate Third Family Graph:
+	 Graph(int dim, bool nine_quest);
 
 	 double CalculateAverageRank();
 	 int RandomWalk(int& N, double& epsilon);
@@ -44,4 +46,6 @@ public:
 	 void JoinRingGraph(int connect_number);
 	 int ChooseRandomVertexIndex(int min, int max);
 	 void check_average_of_two_groups(int rings_start, vector<double> average_vector);
+	 //Third Family related functions:
+	 void InitThirdFamily(int dim);
 };

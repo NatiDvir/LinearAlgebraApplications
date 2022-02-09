@@ -28,6 +28,13 @@ Graph::Graph(int dim, double p, int non_ring_index)
 	 adjencyList[outside_ring].push_back(from_ring);
 }
 
+Graph::Graph(int dim, bool nine_quest)
+{
+	 this->n = dim;
+	 adjencyList = vector<vector<int>>(n, vector<int>());
+	 InitThirdFamily(dim);
+}
+
 vector<double> Graph::quest_1(int N, int t, double epsilon)
 {
 	 vector<double> d_array = t_times_RandomWalk(N, t, epsilon);
@@ -224,6 +231,7 @@ void Graph::check_average_of_two_groups(int rings_start, vector<double> average_
 	 cout << "Ring's group average rank: ";
 	 double sum = 0.0, ring_avg, non_ring_avg;
 	 //Calculate average rank of ring's verteces:
+	 cout << rings_start << endl;
 	 for (int i = rings_start; i < n; i++)
 	 {
 		  sum += average_vector[i];
@@ -237,8 +245,24 @@ void Graph::check_average_of_two_groups(int rings_start, vector<double> average_
 		  sum += average_vector[i];
 	 }
 	 ring_avg = sum / (double)(rings_start);
-	 cout << "Non-Ring's group average rank: ";
-	 cout << non_ring_avg << endl;
+	 cout << "Non-Ring's group average rank: " << non_ring_avg << endl;
+}
+
+void Graph::InitThirdFamily(int dim)
+{
+	 for (int i = 0; i < n; i++)
+	 {
+		  for (int j = 0; j < dim; j++)
+		  {
+			   double p = 1 / (log2(j + 1));
+			   double current_probabilty = GenerateFraction();
+			   if (current_probabilty <= p)
+			   {
+					adjencyList[i].push_back(j);
+			   }
+			   /*Else -> Does nothing...*/
+		  }
+	 }
 }
 
 double Graph::CalculateAverageRank()

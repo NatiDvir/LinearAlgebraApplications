@@ -93,7 +93,7 @@ void Quest_9()
 {
 	 //Choose random vertex outside ring and one inside ring,
 	 //and add the inside-one to be neighbor of the outside one (means there's an edge outside->inside)
-	 int vnum = 1024, N = 650;
+	 int vnum = 1024, N = 1100;
 	 double p = 1.0 / 64.0;
 	 Graph g(vnum, p, 1024 - 64);
 	 vector<double> vec = g.Quest_7(N, 0.0);
@@ -101,8 +101,22 @@ void Quest_9()
 	 g.check_average_of_two_groups(1024 - 64, vec);
 }
 
+void Quest_12()
+{
+	 /*Part 1 of quest 8:*/
+	 int vnum = 1024, N = 64;
+	 double p = 1.0 / 64.0;
+	 Graph g(vnum, p, 1024 - 64);
+	 vector<double> vec = g.Quest_7(N, 0.0, true);
+	 printVector(vec);
+	 /*Part 2 of quest 8:*/
+	 N = 128;
+	 vector<double> vec2 = g.Quest_7(N, 0.0, true);
+	 printVector(vec);
+}
+
 int main()
 {
-	 Quest_9();
+	 Quest_12();
 	 return 0;
 }
