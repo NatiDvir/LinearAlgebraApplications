@@ -106,7 +106,7 @@ void Quest_12()
 	 /*Part 1 of quest 8:*/
 	 int vnum = 1024, N = 64;
 	 double p = 1.0 / 64.0;
-	 Graph g(vnum, p, 1024 - 64);
+	 Graph g(vnum, true);
 	 vector<double> vec = g.Quest_7(N, 0.0, true);
 	 printVector(vec);
 	 /*Part 2 of quest 8:*/

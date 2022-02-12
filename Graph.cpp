@@ -32,6 +32,7 @@ Graph::Graph(int dim, bool nine_quest)
 {
 	 this->n = dim;
 	 adjencyList = vector<vector<int>>(n, vector<int>());
+	 indexes = vector<int>(n, 0);
 	 InitThirdFamily(dim);
 }
 
