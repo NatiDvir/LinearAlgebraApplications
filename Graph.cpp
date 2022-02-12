@@ -74,7 +74,7 @@ int Graph::RandomWalk(int& N, double& epsilon)
 	 for (int step = 0; step < N; step++)
 	 {
 		  fraction = GenerateFraction();
-		  if (fraction >= epsilon && adjencyList[current_vertex].size() > 0)
+		  if (fraction > epsilon && adjencyList[current_vertex].size() > 0)
 		  {
 			   current_vertex = ChooseNeighborVertex(current_vertex);
 		  }
@@ -95,8 +95,7 @@ int Graph::ChooseNeighborVertex(int v)
 
 int Graph::ChooseRandomVertex()
 {
-	 random_shuffle(indexes.begin(), indexes.end());
-	 return indexes[0];
+	 return ChooseRandomVertexIndex(0, n - 1);
 }
 
 void Graph::check_if_probability_vector(vector<double>& d_array)
@@ -179,7 +178,7 @@ vector<double> Graph::Quest_7(int N, double epsilon, bool quest_8)
 		  d_current = t_times_RandomWalk(N, t, epsilon);
 		  d_current_divided = divide_vector_by_t(d_current, t);
 		  distance = Calculate_Distance(d_current_divided, d_previous_divided);
-		  cout << "t = " << t << ";		iteration = " << itr << ";	  Distance = " << distance << endl;
+		  cout << "t = " << t << ";		iteration = " << itr << ";	  Distance = " << setprecision(10) << distance << endl;
 		  itr++;
 	 }
 	 //FOR QUEST 7: if out -> distance < 1.0 / 256.0
@@ -189,7 +188,7 @@ vector<double> Graph::Quest_7(int N, double epsilon, bool quest_8)
 		  avg += d_current[i];
 	 }
 	 avg = avg / (double)n;
-	 cout << "average d is: " << avg << endl;
+	 cout << "average d is: " << setprecision(15) << avg / (double)t << endl;
 
 	 //FOR QUEST 8: if out -> Check distance.
 	 if (quest_8)
@@ -229,24 +228,33 @@ int Graph::ChooseRandomVertexIndex(int min, int max)
 
 void Graph::check_average_of_two_groups(int rings_start, vector<double> average_vector)
 {
-	 cout << "Ring's group average rank: ";
 	 double sum = 0.0, ring_avg, non_ring_avg;
+	 cout << "Average rank of all graph's verteces: ";
+	 for (int i = 0; i < n; i++)
+	 {
+		  sum += average_vector[i];
+	 }
+
+	 non_ring_avg = sum / (double)n;
+	 cout << non_ring_avg << endl;
+	 non_ring_avg = 0.0;
+	 cout << "Ring's group average rank: ";
 	 //Calculate average rank of ring's verteces:
-	 cout << rings_start << endl;
 	 for (int i = rings_start; i < n; i++)
 	 {
 		  sum += average_vector[i];
 	 }
-	 non_ring_avg = sum / (double)(n - rings_start);
-	 cout << non_ring_avg << endl;
+
+	 ring_avg = sum / (double)(n - rings_start);
+	 cout << setprecision(15) << ring_avg << endl;
 	 sum = 0.0;
 	 //Calculate average rank of non-ring's verteces:
 	 for (int i = 0; i < rings_start; i++)
 	 {
 		  sum += average_vector[i];
 	 }
-	 ring_avg = sum / (double)(rings_start);
-	 cout << "Non-Ring's group average rank: " << non_ring_avg << endl;
+	 non_ring_avg = sum / (double)(rings_start);
+	 cout << "Non-Ring's group average rank: " << setprecision(15) << non_ring_avg << endl;
 }
 
 void Graph::InitThirdFamily(int dim)
